@@ -1,0 +1,312 @@
+@font-face {
+    font-family: Fonte-externa;
+    src: url(assets/font/DancingScript-VariableFont_wght.ttf);
+}
+
+* {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #888181;
+}
+
+header {
+    background-color: #2a2b2e;
+    color: #fff;
+    text-align: center;
+    padding: 20px; 
+}
+
+header h1 {
+    font-family: Fonte-externa;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.4s;
+}
+
+nav a:hover {
+    background-color: gray;
+    font-size: 20px;
+}
+
+#cart-icon-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  #cart-icon {
+    width: 50px; 
+    height: 50px;
+    margin-top: 20px; 
+    margin-right: 20px;
+  }
+  
+  #cart-counter {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px; 
+    text-align: center;
+    line-height: 20px; 
+    font-size: 14px; 
+    display: none; 
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close:hover {
+    color: black;
+  }
+  
+  .buy-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .buy-button:hover {
+    background-color: #45a049;
+  }
+
+main {
+    padding: 20px;
+    overflow: hidden;
+}
+
+[class*="col-"] {
+    float: left;
+    padding-right: 10px;
+}
+    
+
+.col-1 { width: 8.33%; }
+.col-2 { width: 16.66%; }
+.col-3 { width: 24.99%; }
+.col-4 { width: 33.32%; }
+.col-5 { width: 41.65%; }
+.col-6 { width: 49.98%; }
+.col-7 { width: 58.31%; }
+.col-8 { width: 66.64%; }
+.col-9 { width: 74.97%; }
+.col-10 { width: 83.3%; }
+.col-11 { width: 91.63%; }
+.col-12 { width: 99.96%; }
+
+.card {
+    position: relative;
+    width: calc(33.33% - 20px);
+    margin: 10px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    float: left;
+    border-radius: 20px;
+    height: 490px;
+  }
+  
+  .card span {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .card h2 {
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .card p {
+    color: #777;
+  }
+  
+  .card img {
+    max-width: 100%;
+    height: 300px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .card button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 20px;
+  }
+  
+  .card button:hover {
+    background-color: #555;
+  }
+
+footer {
+    background-color: #2a2b2e;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+}
+
+.container {
+    width: 1200px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    overflow: hidden;
+}
+
+form fieldset {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+form legend {
+  font-weight: bold;
+  color: #777;
+}
+
+.input-container {
+    margin-bottom: 10px;
+}
+
+.input-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #555;
+}
+
+.radio-group label {
+    display: inline;
+    margin-right: 10px;
+    font-weight: normal;
+  }
+  
+  .input-check {
+      display: inline-block;
+      margin-right: 10px;
+  }
+  
+  .input-check input[type="checkbox"] + label {
+      display: inline-block;
+      font-weight: normal;
+  }
+
+  span {
+    float: right;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical; 
+    height: 120px; 
+  }
+  
+  select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 10px;
+    cursor: pointer; 
+  }
+  
+  button[type="reset"] {
+    background-color: #6c757d;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
