@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário de Cadastro</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/5.x/dist/jquery.inputmask.js"></script>
+  <script src="js/script.js"></script>
+  <style>
+    fieldset {
+      border: 2px solid black;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      width: 300px;
+      margin: auto;
+    }
+
+    legend {
+      font-size: 1.2em;
+      color: black;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+    $(document).ready(function () {
+        // Máscara para CPF
+        $('#cpf').inputmask('999.999.999-99');
+
+        // Máscara para CEP
+        $('#cep').inputmask('99999-999');
+
+        // Máscara para telefone
+        $('#telefone').inputmask('(99) 9999-9999');
+    });
+
+    function validarEmail() {
+        var email = document.getElementById("email").value;
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+            alert("Email inválido");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<fieldset>
+    <legend>Formulário de Cadastro</legend>
+    <form id="cadastroForm">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" name="cpf" placeholder="123.456.789-00" required>
+
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="telefone">Telefone:</label>
+        <input type="tel" id="telefone" name="telefone" placeholder="(00) 1234-5678" required>
+
+        <label for="cep">CEP:</label>
+        <input type="text" id="cep" name="cep" placeholder="12345-678" required>
+
+        <button type="button" onclick="validarFormulario()">Cadastrar</button>
+       
+        <button type="button" onclick="somarTotaisVendasNoLocalStorage();">Somar vendas totais</button>
+        <span id="total1"></span>
+    </form>
+
+    <div id="resultado"></div>
+</fieldset>
+
+<script>
+var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+var targetUrl = 'http://jkorpela.fi/cgi-bin/echo.cgi';
+
+const urlParams = new URLSearchParams(window.location.search);
+const totalValue = urlParams.get('total');
+console.log('Valor Total:', totalValue);
+var total = document.getElementById("total1");
+total.innerHTML = totalValue + "R$";
+
+function validarFormulario() {
+    var form = document.getElementById("cadastroForm");
+    var resultado = document.getElementById("resultado");
+
+    if (form.checkValidity() && validarEmail()) {
+        // Formulário válido, pode processar os dados
+
+        // Coletar os dados do formulário
+        var formData = new FormData(form);
+
+        // Adicionar o total ao FormData (se necessário)
+        formData.append('total', totalValue);
+
+        // Usando o CORS Anywhere para permitir requisições do seu site para o serviço HTTP
+        fetch(proxyUrl + targetUrl, {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.text())
+        .then(data => {
+            resultado.innerHTML = "Formulário válido. Dados enviados!";
+            // Abrir a resposta do serviço no navegador
+            var newWindow = window.open('_blank');
+            newWindow.document.write(data);
+            newWindow.document.close();
+        })
+        .catch((error) => {
+            resultado.innerHTML = "<div class='error'>Erro ao enviar dados.</div>";
+            console.error('Erro:', error);
+        });
+    } else {
+        // Formulário inválido, exibir mensagens de erro
+        resultado.innerHTML = "<div class='error'>Por favor, preencha o formulário corretamente.</div>";
+    }
+}
+
+function adicionarTotalAoLocalStorage(total) {
+    // Recupere o histórico de vendas do localStorage
+    let historicoVendas = JSON.parse(localStorage.getItem('historicoVendas')) || [];
+
+    // Converta o total para número antes de adicionar ao histórico
+    historicoVendas.push(parseFloat(total));
+
+    // Salve o histórico de vendas atualizado no localStorage
+    localStorage.setItem('historicoVendas', JSON.stringify(historicoVendas));
+}
+
+function somarTotaisVendasNoLocalStorage() {
+    // Recupere o histórico de vendas do localStorage
+    const historicoVendas = JSON.parse(localStorage.getItem('historicoVendas')) || [];
+
+    // Converta cada venda para número durante a soma
+    const totalVendas = historicoVendas.reduce((acc, venda) => acc + parseFloat(venda), 0);
+
+    // Exiba o total no console ou atualize o seu HTML conforme necessário
+    console.log('Total das Vendas:', totalVendas);
+}
+</script>
+
+</body>
+</html>

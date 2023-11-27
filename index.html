@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="js/script.js"></script>
     <title>Livraria</title>
 </head>
 <body>
@@ -26,21 +27,22 @@
 
     <main>
         <section class="cards">
-            <div class="card">
+            <div class="card" data-book-key="cálice-de-fogo">
                 <span>49,99R$</span>
                 <img src="assets/img/HP - cálice de fogo.jfif" alt="Harry Potter Cálice de Fogo">
                 <h2>Harry Potter - Cálice de Fogo</h2>
                 <p>Autora: J.K Rowling</p>
                 <button>Comprar</button>
             </div>
-            <div class="card">
+            <!-- Adicione o atributo data-book-key aos outros cartões também -->
+            <div class="card" data-book-key="rainha-vermelha">
                 <span>87,99R$</span>
                 <img src="assets/img/Rainha vermelha.jfif" alt="Rainha vermelha">
                 <h2>Rainha Vermelha</h2>
                 <p>Autora: Victoria Aveyard</p>
                 <button>Comprar</button>
             </div>
-            <div class="card">
+            <div class="card" data-book-key="ultimo-desejo">
                 <span>99,99R$</span>
                 <img src="assets/img/The witcher o último desejo.jfif" alt="The witcher o último desejo">
                 <h2>The Witcher: O último Desejo</h2>
@@ -49,21 +51,22 @@
             </div>
         </section>
         <section class="cards">
-            <div class="card col-4">
+            <!-- Adicione o atributo data-book-key aos outros cartões desta seção -->
+            <div class="card col-4" data-book-key="leo-davinci">
                 <span>35,00R$</span>
                 <img src="assets/img/Leo Davinci.jfif" alt="Livro Leonardo Davinci e seu Supercérebro">
-                <h2>Livro Leonardo Davinci e seu Supercérebro</h2>
+                <h2>Leonardo Davinci e seu Supercérebro</h2>
                 <p>Autor: Michael Cox</p>
                 <button>Comprar</button>
             </div>
-            <div class="card col-4">
+            <div class="card col-4" data-book-key="newton-maca">
                 <span>39,99R$</span>
                 <img src="assets/img/Newton e sua maçã.jfif" alt="Livro Newton e sua Maçã">
-                <h2>Livro Newton <br>e sua Maçã</h2>
+                <h2>Isaac Newton e sua Maçã</h2>
                 <p>Autor: John Liam</p>
                 <button>Comprar</button>
             </div>
-            <div class="card col-4">
+            <div class="card col-4" data-book-key="cientistas">
                 <span>30,00R$</span>
                 <img src="assets/img/Os cientistas.jfif" alt="Livro Os Cientistas e seus experimentos de arromba">
                 <h2>Os Cientistas e seus experimentos de arromba</h2>
@@ -90,42 +93,43 @@
         const books = {
           'cálice-de-fogo': {
             name: 'Harry Potter - Cálice de Fogo',
-            price: 80.00,
+            price: 49.99,
             image: 'assets/img/HP - cálice de fogo.jfif',
             quantity: 0
           },
           'rainha-vermelha': {
             name: 'Rainha Vermelha',
-            price: 80.00,
+            price: 87.99,
             image: 'assets/img/Rainha vermelha.jfif',
             quantity: 0
           },
           'ultimo-desejo': {
             name: 'The Witcher: O último Desejo',
-            price: 80.00,
+            price: 99.99,
             image: 'assets/img/The witcher o último desejo.jfif',
             quantity: 0
           },
           'leo-davinci': {
             name: 'Livro Leonardo Davinci e seu Supercérebro',
-            price: 80.00,
+            price: 35.00,
             image: 'assets/img/Leo Davinci.jfif',
             quantity: 0
           },
           'newton-maca': {
             name: 'Livro Newton e sua Maçã',
-            price: 80.00,
+            price: 39.99,
             image: 'assets/img/Newton e sua maçã.jfif',
             quantity: 0
           },
           'cientistas': {
             name: 'Os Cientistas e seus experimentos de arromba',
-            price: 80.00,
+            price: 30.00,
             image: 'assets/img/Os cientistas.jfif',
             quantity: 0
           }
         };
-      
+        
+        var totalvenda = 0;
         const cart = [];
       
         function updateCartCounter() {
@@ -136,9 +140,13 @@
       
         function addToCart(bookKey) {
           const book = books[bookKey];
-          cart.push(book);
-          updateCartCounter();
-          updateCartModal();
+          if (book) {
+            cart.push(book);
+            updateCartCounter();
+            updateCartModal();
+          } else {
+            console.error(`Livro com a chave '${bookKey}' não encontrado.`);
+          }
         }
       
         function removeFromCart(index) {
@@ -148,24 +156,30 @@
         }
       
         function updateCartModal() {
-          const cartItemsList = document.getElementById('cart-items-list');
-          const cartTotal = document.getElementById('cart-total');
-      
-          cartItemsList.innerHTML = '';
-      
-          cart.forEach((book, index) => {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-              <img src="${book.image}" alt="${book.name}" width="50">
-              <span>${book.name} - ${book.price.toFixed(2)}R$</span>
-              <button onclick="removeFromCart(${index})">Remover</button>
-            `;
-            cartItemsList.appendChild(listItem);
-          });
-      
-          const total = cart.reduce((acc, book) => acc + book.price, 0).toFixed(2);
-          cartTotal.innerText = `Total: ${total}R$`;
-        }
+        const cartItemsList = document.getElementById('cart-items-list');
+        const cartTotal = document.getElementById('cart-total');
+
+        cartItemsList.innerHTML = '';
+
+        cart.forEach((book, index) => {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `
+            <div style="display: flex; align-items: center;">
+              <img src="${book.image}" alt="${book.name}" width="80" style="border-radius: 5px; margin-right: 10px;">
+              <div>
+                <span style="font-size: 18px; font-weight: bold;">${book.name}</span>
+                <p style="font-size: 16px; color: #555; margin-top: 5px;">${book.price.toFixed(2)}R$</p>
+              </div>
+            </div>
+            <button onclick="removeFromCart(${index})" style="background-color: #007bff; color: white; border: none; border-radius: 5px; padding: 8px 16px; cursor: pointer; transition: background-color 0.3s ease; margin-top: 5px;">Remover</button>
+          `;
+          cartItemsList.appendChild(listItem);
+        });
+
+        const total = cart.reduce((acc, book) => acc + book.price, 0).toFixed(2);
+        cartTotal.innerText = `Total: ${total}R$`;
+        totalvenda = `${total}`;
+      }
       
         const buttons = document.querySelectorAll('.card button');
         buttons.forEach(function (button) {
@@ -187,12 +201,31 @@
           modal.style.display = 'none';
         });
       
-        const buyButton = document.getElementById('buy-button');
-        buyButton.addEventListener('click', function () {
-          alert('Implemente aqui a lógica de compra');
-        });
+      function openNewWindow(total) {
+                // Configurar as dimensões da nova janela
+                var width = 500;
+                var height = 500;
+
+                // Calcular as coordenadas para centralizar a janela na tela
+                var left = (window.innerWidth - width) / 2;
+                var top = (window.innerHeight - height) / 2;
+
+                // Configurar os parâmetros para a nova janela
+                var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes";
+
+                // Adicionar o valor total aos parâmetros da URL
+                var url = "cadastro.html?total=" + encodeURIComponent(total);
+
+                // Abrir a nova janela
+                var newWindow = window.open(url, "_blank", options);
+
+                // Focar na nova janela (opcional)
+                newWindow.focus();
+            }
+          const buyButton = document.getElementById('buy-button');
+          buyButton.addEventListener('click', function () {
+              openNewWindow(cart.reduce((acc, book) => acc + book.price, 0).toFixed(2));
+          });
       </script>
-      
-      
 </body>
 </html>
