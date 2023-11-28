@@ -89,7 +89,7 @@
         const textArea = document.getElementById('mensagemCompra');
         
         // Atualizar o conteúdo da textarea
-        textArea.innerHTML = `${nome.value} do CPF ${cpf.value} escolheu ${quantidadeLivros} livro(s) e vai gastar ${totalValue}R$`;
+        textArea.innerHTML = `${nome.value} do CPF ${cpf.value}, do email ${email.value}, do telefone ${telefone.value}, do cep ${cep.value}, escolheu ${quantidadeLivros} livro(s) e vai gastar ${totalValue}R$`;
     }
 
 </script>
@@ -104,17 +104,18 @@
         <input type="text" id="cpf" name="cpf" oninput="updateTextoCompra()" placeholder="123.456.789-00" required>
 
         <label for="email">E-mail:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" oninput="updateTextoCompra()" name="email" required>
 
         <label for="telefone">Telefone:</label>
-        <input type="tel" id="telefone" name="telefone" placeholder="(00) 1234-5678" required>
+        <input type="tel" id="telefone" oninput="updateTextoCompra()" name="telefone" placeholder="(00) 1234-5678" required>
 
         <label for="cep">CEP:</label>
-        <input type="text" id="cep" name="cep" placeholder="12345-678" required>
+        <input type="text" id="cep" name="cep" oninput="updateTextoCompra()" placeholder="12345-678" required>
 
         <input type="hidden" id="quantidadeLivros" name="quantidadeLivros"><br><br><br>
 
-        <textarea name="mensagemCompra" id="mensagemCompra" cols="30" rows="5" readonly></textarea>
+        <textarea name="mensagemCompra" id="mensagemCompra" cols="30" rows="8" readonly></textarea>
+        <textarea name="lista" id="lista" cols="30" rows="10" readonly></textarea>
         <button type="button" onclick="validarFormulario()">Cadastrar</button>
        
         <button type="button" onclick="somarTotaisVendasNoLocalStorage();">Somar vendas totais</button>
