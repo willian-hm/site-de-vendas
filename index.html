@@ -137,6 +137,11 @@
           counter.innerText = cart.length;
           counter.style.display = cart.length > 0 ? 'block' : 'none';
         }
+
+        function updateQuantidadeLivros() {
+        const quantidadeLivros = cart.length;
+        document.getElementById('quantidadeLivros').value = quantidadeLivros;
+}
       
         function addToCart(bookKey) {
           const book = books[bookKey];
@@ -204,7 +209,7 @@
       function openNewWindow(total) {
                 // Configurar as dimensões da nova janela
                 var width = 500;
-                var height = 500;
+                var height = 600;
 
                 // Calcular as coordenadas para centralizar a janela na tela
                 var left = (window.innerWidth - width) / 2;
@@ -214,7 +219,7 @@
                 var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes";
 
                 // Adicionar o valor total aos parâmetros da URL
-                var url = "cadastro.html?total=" + encodeURIComponent(total);
+                var url = "cadastro.html?total=" + encodeURIComponent(total) + "&quantidadeLivros=" + cart.length;
 
                 // Abrir a nova janela
                 var newWindow = window.open(url, "_blank", options);
