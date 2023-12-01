@@ -74,10 +74,9 @@
     }
 
     function updateQuantidadeLivros() {
-        const quantidadeLivros = cart.length;
-        document.getElementById('quantidadeLivros').value = quantidadeLivros;
-
-    }
+    const totalQuantity = cart.reduce((acc, book) => acc + book.quantity, 0);
+    document.getElementById('quantidadeLivros').value = totalQuantity;
+}
 
 
     function updateTextoCompra() {
@@ -108,7 +107,7 @@
         <label for="cep">CEP:</label>
         <input type="text" id="cep" name="cep" oninput="updateTextoCompra()" placeholder="12345-678" required>
 
-        <input type="hidden" id="quantidadeLivros" name="quantidadeLivros"><br><br><br>
+        <input type="hidden" id="quantidadeLivros" name="quantidadeLivros" value="0"><br><br><br>
 
         <textarea name="mensagemCompra" id="mensagemCompra" cols="50" rows="8" readonly></textarea>
         <textarea name="lista" id="lista" cols="50" rows="8" readonly></textarea>
@@ -130,10 +129,12 @@ const listaLivros = urlParams.getAll('livroDetalhes');
 const listaTextarea = document.getElementById('lista');
 listaTextarea.value = listaLivros.join('\n');
 
+console.log(quantidadeLivros)
+
 var total = document.getElementById("total1");
 total.innerHTML = totalValue + "R$";
 
-cart = [];
+cart = []; // Certifique-se de que esta variável está no escopo global
 
 function validarFormulario() {
     var form = document.getElementById("cadastroForm");
@@ -142,6 +143,8 @@ function validarFormulario() {
     updateQuantidadeLivros();  // Atualiza a quantidade de livros no campo oculto
 
     if (form.checkValidity() && validarEmail()) {
+        armazenarDadosDoFormulario(new FormData(form)); // Adiciona esta linha para armazenar os dados
+        adicionarTotalAoLocalStorage(parseFloat(totalValue)); // Converte para número antes de armazenar
         form.submit();
     } else {
         // Formulário inválido, exibir mensagens de erro
