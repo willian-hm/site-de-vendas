@@ -6,7 +6,6 @@
   <title>Formulário de Cadastro</title>
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/5.x/dist/jquery.inputmask.js"></script>
-  <script src="js/script.js"></script>
   <style>
     fieldset {
       border: 2px solid black;
@@ -78,9 +77,6 @@
         const quantidadeLivros = cart.length;
         document.getElementById('quantidadeLivros').value = quantidadeLivros;
 
-        // Exibir a quantidade de livros na textarea
-        const mensagemCompraTextarea = document.getElementById('mensagemCompra');
-        mensagemCompraTextarea.value = `Quantidade de livros no carrinho: ${quantidadeLivros}`;
     }
 
 
@@ -114,8 +110,8 @@
 
         <input type="hidden" id="quantidadeLivros" name="quantidadeLivros"><br><br><br>
 
-        <textarea name="mensagemCompra" id="mensagemCompra" cols="30" rows="8" readonly></textarea>
-        <textarea name="lista" id="lista" cols="30" rows="10" readonly></textarea>
+        <textarea name="mensagemCompra" id="mensagemCompra" cols="50" rows="8" readonly></textarea>
+        <textarea name="lista" id="lista" cols="50" rows="8" readonly></textarea>
         <button type="button" onclick="validarFormulario()">Cadastrar</button>
        
         <button type="button" onclick="somarTotaisVendasNoLocalStorage();">Somar vendas totais</button>
@@ -130,13 +126,14 @@
 const urlParams = new URLSearchParams(window.location.search);
 const totalValue = urlParams.get('total');
 const quantidadeLivros = urlParams.get('quantidadeLivros');
-
-console.log('Valor Total:', totalValue);
-console.log('Quantidade de Livros:', quantidadeLivros);
+const listaLivros = urlParams.getAll('livroDetalhes');
+const listaTextarea = document.getElementById('lista');
+listaTextarea.value = listaLivros.join('\n');
 
 var total = document.getElementById("total1");
 total.innerHTML = totalValue + "R$";
 
+cart = [];
 
 function validarFormulario() {
     var form = document.getElementById("cadastroForm");
@@ -151,7 +148,8 @@ function validarFormulario() {
         resultado.innerHTML = "<div class='error'>Por favor, preencha o formulário corretamente.</div>";
     }
 }
-console.log(quantidadeLivros.value)
+
+
 var text = document.getElementById("mensagemCompra");
 
 function armazenarDadosDoFormulario(formData) {
